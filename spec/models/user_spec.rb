@@ -98,27 +98,38 @@ RSpec.describe User, type: :model do
   end
 
   describe "#followers" do
-  it "can list all of the user's followers" do
-    user1 = create_a_user
-    user2 = create_a_user
-    fol1 = create_a_user
-    fol2 = create_a_user
-    fol3 = create_a_user
-    fol4 = create_a_user
-    Bond.create user: fol1,
-      friend: user1,
-      state: Bond::FOLLOWING
-    Bond.create user: fol2,
-      friend: user1,
-      state: Bond::FOLLOWING
-    Bond.create user: fol3,
-      friend: user2,
-      state: Bond::FOLLOWING
-    Bond.create user: fol4,
-      friend: user2,
-      state: Bond::REQUESTING
-    expect(user1.followers).to eq([fol1, fol2])
-    expect(user2.followers).to eq([fol3])
+    it "can list all of the user's followers" do
+      user1 = create_a_user
+      user2 = create_a_user
+      fol1 = create_a_user
+      fol2 = create_a_user
+      fol3 = create_a_user
+      fol4 = create_a_user
+      Bond.create user: fol1,
+        friend: user1,
+        state: Bond::FOLLOWING
+      Bond.create user: fol2,
+        friend: user1,
+        state: Bond::FOLLOWING
+      Bond.create user: fol3,
+        friend: user2,
+        state: Bond::FOLLOWING
+      Bond.create user: fol4,
+        friend: user2,
+        state: Bond::REQUESTING
+      expect(user1.followers).to eq([fol1, fol2])
+      expect(user2.followers).to eq([fol3])
+    end
   end
-end
+
+  describe "#save" do
+    it "capitalized the name correctly" do
+      user = create_a_user
+      user.first_name = "AdaM"
+      user.last_name = "van der Berg"
+      user.save
+      expect(user.first_name).to eq "Adam"
+      expect(user.last_name).to eq "van der Berg"
+    end
+  end
 end

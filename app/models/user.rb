@@ -28,4 +28,14 @@ class User < ApplicationRecord
     validates :first_name, presence: true
     validates :email, format: { with: URI::MailTo::EMAIL_REGEXP}
 
+
+    before_save :ensure_proper_name_case
+    
+    private
+
+    def ensure_proper_name_case
+      self.first_name = first_name.capitalize
+    end
+
+
 end
